@@ -348,11 +348,9 @@ These limitations should be considered when interpreting the estimated volatilit
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR-GITHUB-USERNAME/exchange-rate-volatility-malaysia.git
+git clone https://github.com/wayeesiong/exchange-rate-volatility-malaysia.git
 cd exchange-rate-volatility-malaysia
 ```
-
-Replace `YOUR-GITHUB-USERNAME` with your actual GitHub username.
 
 ### 2. Create a Python Environment
 
