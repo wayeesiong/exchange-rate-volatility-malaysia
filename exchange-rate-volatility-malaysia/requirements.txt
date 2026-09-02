@@ -1,8 +1,0 @@
-# Template only — verify against the actual imports in your final Python code before publishing.
-pandas
-numpy
-matplotlib
-statsmodels
-arch
-scipy
-openpyxl
