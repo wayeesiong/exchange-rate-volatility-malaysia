@@ -452,7 +452,7 @@ preds = ['VOL', 'D_L_REER', 'D_L_WPI', 'D_L_CPI', 'D_L_IPI']
 print(f"{'Direction':<20} | {'p-value':<10} | {'Result'}")
 granger_results = []
 for p in preds:
-    res = grangercausalitytests(gc_clean[['EG', p]], maxlag=[2], verbose=False)
+    res = grangercausalitytests(gc_clean[['EG', p]], maxlag=[2])
     pval = res[2][0]['ssr_ftest'][1]
     print(f"{p:<12} -> EG  | {pval:.4f}     | {'Causal' if pval<0.05 else 'No Cause'}")
     granger_results.append({
