@@ -1,108 +1,89 @@
-# \# Exchange Rate Volatility and Export Growth in Malaysia
+# Exchange Rate Volatility and Export Growth in Malaysia
 
-# 
+**Python | Financial Econometrics | ARIMA | EGARCH | ARDL | ECM**
 
-# \*\*Python | ARIMA | EGARCH | ARDL | ECM | Financial Econometrics\*\*
+## Overview
 
-# 
+This project investigates the impact of MYR/USD exchange-rate volatility on Malaysia's export growth using Python-based time-series econometric modelling.
 
-# \## Overview
+The analysis combines volatility modelling with macroeconomic time-series analysis to examine whether exchange-rate volatility affects export performance differently in the short run and long run.
 
-# 
+## Research Objectives
 
-# This project investigates the relationship between MYR/USD exchange-rate volatility and Malaysia's export growth using Python-based time-series econometric modelling.
+- Estimate MYR/USD exchange-rate volatility using ARIMA and EGARCH models.
+- Examine the long-run relationship between exchange-rate volatility and Malaysia's export growth.
+- Evaluate short-run adjustment dynamics using an Error Correction Model.
+- Conduct diagnostic, stability, and causality tests to assess model robustness.
 
-# 
+## Methodology
 
-# The analysis applies a two-stage framework:
+### 1. Exchange Rate Volatility Estimation
+Daily MYR/USD log returns are analysed using:
 
-# 
+- ARIMA model selection
+- GARCH(1,1)
+- EGARCH(1,1)
+- AIC and BIC model comparison
 
-# 1\. Estimate exchange-rate volatility using ARIMA and EGARCH models.
+The estimated conditional volatility is subsequently converted to monthly frequency for macroeconomic analysis.
 
-# 2\. Analyse the short-run and long-run relationship between volatility and export growth using ARDL and Error Correction Model techniques.
+### 2. Stationarity Testing
 
-# 
+The following tests are applied:
 
-# \## Research Objective
+- Augmented Dickey-Fuller (ADF)
+- Phillips-Perron (PP)
 
-# 
+### 3. ARDL and ECM Analysis
 
-# The project examines whether exchange-rate volatility influences Malaysia's export growth and whether the relationship differs between the short run and long run.
+An Autoregressive Distributed Lag model is used to evaluate the relationship between export growth and:
 
-# 
+- Exchange-rate volatility
+- Real Effective Exchange Rate
+- World Industrial Production Index
+- Consumer Price Index
+- Industrial Production Index
 
-# \## Methodology
+The analysis includes:
 
-# 
+- Optimal lag selection
+- ARDL Bounds Test
+- Long-run coefficient estimation
+- Error Correction Model
+- Diagnostic tests
+- CUSUM and CUSUMSQ stability tests
+- Subsample stability testing
+- Granger causality testing
 
-# \- ARIMA model selection
+## Tools & Libraries
 
-# \- GARCH / EGARCH volatility modelling
+- Python
+- pandas
+- NumPy
+- statsmodels
+- arch
+- pmdarima
+- SciPy
+- Matplotlib
+- Seaborn
 
-# \- Augmented Dickey-Fuller stationarity testing
+## Repository Structure
 
-# \- Phillips-Perron stationarity testing
+```text
+code/
+├── 01_arima_egarch.py
+├── 02_monthly_volatility.py
+├── 03_stationarity_tests.py
+└── 04_ardl_ecm_analysis.py
 
-# \- ARDL modelling
+data/
+├── raw/
+└── processed/
 
-# \- Error Correction Model
+outputs/
+├── figures/
+├── tables/
+└── model-results/
 
-# \- Bounds testing
-
-# \- Diagnostic testing
-
-# \- CUSUM and CUSUMSQ stability testing
-
-# \- Granger causality testing
-
-# 
-
-# \## Tools
-
-# 
-
-# \- Python
-
-# \- pandas
-
-# \- NumPy
-
-# \- statsmodels
-
-# \- arch
-
-# \- pmdarima
-
-# \- matplotlib
-
-# \- seaborn
-
-# 
-
-# \## Repository Structure
-
-# 
-
-# \- `code/` — Python analysis scripts
-
-# \- `data/raw/` — original exchange-rate dataset
-
-# \- `data/processed/` — processed modelling datasets
-
-# \- `outputs/figures/` — diagnostic and analytical figures
-
-# \- `outputs/tables/` — statistical test results
-
-# \- `outputs/model-results/` — full model outputs
-
-# \- `report/` — academic research report
-
-# 
-
-# \## Academic Note
-
-# 
-
-# This repository is based on a group academic project completed for Financial Econometrics. The repository is presented as a portfolio demonstration of quantitative financial and econometric analysis.
-
+report/
+└── exchange-rate-volatility-malaysia.pdf
