@@ -2,6 +2,19 @@
 
 **Python | Financial Econometrics | ARIMA | EGARCH | ARDL | ECM | Time-Series Analysis**
 
+> **Project at a glance:**  
+> A Python-based financial econometrics study examining whether MYR/USD exchange-rate volatility affects Malaysia's export growth in the short and long run.
+
+### Explore the Project
+
+- 📊 [View Key Findings](#key-findings)
+- 💻 [Browse Python Code](code/)
+- 📈 [View Diagnostic Figures](outputs/figures/)
+- 📋 [View Statistical Tables](outputs/tables/)
+- 📄 [Read Full Research Report](report/exchange-rate-volatility-malaysia.pdf)
+
+---
+
 ## Project Overview
 
 This project investigates the impact of **MYR/USD exchange-rate volatility on Malaysia's export growth** using Python-based financial econometric modelling.
