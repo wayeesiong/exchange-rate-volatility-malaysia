@@ -55,6 +55,13 @@ The analysis includes:
 - Subsample stability testing
 - Granger causality testing
 
+## Key Findings
+1. The selected volatility specification captures substantial persistence in MYR/USD exchange-rate volatility.
+2. Evidence indicates a long-run relationship between exchange-rate volatility and Malaysia's export growth.
+3. Exchange-rate volatility exhibits a negative long-run association with export performance.
+4. The short-run effect of exchange-rate volatility is weaker than the long-run effect.
+5. Stability tests suggest that the relationship varies across major macroeconomic regimes and periods of economic stress.
+
 ## Tools & Libraries
 
 - Python
