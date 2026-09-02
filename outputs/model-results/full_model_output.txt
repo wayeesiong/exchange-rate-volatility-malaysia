@@ -1,0 +1,387 @@
+============================================================
+STEP 1: Finding Best ARIMA(p,d,q) Model
+============================================================
+Performing stepwise search to minimize aic
+ ARIMA(0,0,0)(0,0,0)[0]             : AIC=-2980.713, Time=0.33 sec
+ ARIMA(1,0,0)(0,0,0)[0]             : AIC=-2978.714, Time=0.82 sec
+ ARIMA(0,0,1)(0,0,0)[0]             : AIC=-2978.714, Time=0.27 sec
+ ARIMA(1,0,1)(0,0,0)[0]             : AIC=-2976.713, Time=0.26 sec
+ ARIMA(0,0,0)(0,0,0)[0] intercept   : AIC=-2978.815, Time=0.39 sec
+
+Best model:  ARIMA(0,0,0)(0,0,0)[0]          
+Total fit time: 2.073 seconds
+
+🏆 Optimal ARIMA Order found: (0, 0, 0)
+
+============================================================
+STEP 2: Fitting Volatility Models (GARCH vs EGARCH)
+============================================================
+
+--- MODEL COMPARISON ---
+Model           | AIC          | BIC          | Log-Likelihood
+-------------------------------------------------------
+GARCH(1,1)      | -4016.1037   | -3990.1264   | 2012.0519
+EGARCH(1,1)     | -4049.6017   | -4017.1300   | 2029.8008
+
+✅ WINNER: EGARCH(1,1)
+   Reason: Lower AIC indicates better fit.
+   implication: Asymmetric leverage effect is likely present.
+
+--- Best Model Summary ---
+                     Constant Mean - EGARCH Model Results                     
+==============================================================================
+Dep. Variable:              Residuals   R-squared:                       0.000
+Mean Model:             Constant Mean   Adj. R-squared:                  0.000
+Vol Model:                     EGARCH   Log-Likelihood:                2029.80
+Distribution:                  Normal   AIC:                          -4049.60
+Method:            Maximum Likelihood   BIC:                          -4017.13
+                                        No. Observations:                 4887
+Date:                Sat, Nov 22 2025   Df Residuals:                     4886
+Time:                        20:45:17   Df Model:                            1
+
+                                  Mean Model                                  
+==============================================================================
+                  coef    std err          t      P>|t|       95.0% Conf. Int.
+------------------------------------------------------------------------------
+mu         -1.9911e-03  2.051e-03     -0.971      0.332 [-6.011e-03,2.029e-03]
+
+                               Volatility Model                              
+=============================================================================
+                 coef    std err          t      P>|t|       95.0% Conf. Int.
+-----------------------------------------------------------------------------
+omega         -0.0322  2.089e-02     -1.542      0.123 [-7.315e-02,8.739e-03]
+alpha[1]       0.1377  3.980e-02      3.461  5.389e-04    [5.972e-02,  0.216]
+gamma[1]   3.1130e-03  1.073e-02      0.290      0.772 [-1.792e-02,2.415e-02]
+beta[1]        0.9886  6.128e-03    161.328      0.000      [  0.977,  1.001]
+=============================================================================
+
+Covariance estimator: robust
+
+
+
+Scaling Log Returns by 100 for better optimization...
+✅ Data Loaded. 4844 observations.
+
+============================================================
+ESTIMATING MODEL: Constant Mean - EGARCH(1,1)
+============================================================
+
+                     Constant Mean - EGARCH Model Results                        
+====================================================================================
+Dep. Variable:                Scaled_Return   R-squared:                       0.000
+Mean Model:                   Constant Mean   Adj. R-squared:                  0.000
+Vol Model:                           EGARCH   Log-Likelihood:                2241.75
+Distribution:      Standardized Student's t   AIC:                          -4471.50
+Method:                  Maximum Likelihood   BIC:                          -4432.59
+                                              No. Observations:                 4844
+Date:                      Sun, Nov 23 2025   Df Residuals:                     4843
+Time:                              14:45:59   Df Model:                            1
+                                  Mean Model                                 
+=============================================================================
+                 coef    std err          t      P>|t|       95.0% Conf. Int.
+-----------------------------------------------------------------------------
+mu         1.3887e-03  1.793e-03      0.774      0.439 [-2.126e-03,4.903e-03]
+                                Volatility Model                               
+===============================================================================
+                  coef    std err          t      P>|t|        95.0% Conf. Int.
+-------------------------------------------------------------------------------
+omega          -0.0376  1.691e-02     -2.220  2.639e-02 [-7.070e-02,-4.404e-03]
+alpha[1]        0.1724  2.884e-02      5.979  2.251e-09       [  0.116,  0.229]
+gamma[1]   -7.3761e-03  9.341e-03     -0.790      0.430  [-2.568e-02,1.093e-02]
+beta[1]         0.9863  4.969e-03    198.483      0.000       [  0.977,  0.996]
+                              Distribution                              
+========================================================================
+                 coef    std err          t      P>|t|  95.0% Conf. Int.
+------------------------------------------------------------------------
+nu             4.7208      0.340     13.901  6.246e-44 [  4.055,  5.386]
+========================================================================
+
+Covariance estimator: robust
+
+============================================================
+✅ SUCCESS: Volatility data saved to 'final_volatility_data.csv'
+============================================================
+
+=== DIAGNOSTIC 1: Ljung-Box Test ===
+      lb_stat  lb_pvalue
+10  22.634345    0.01218
+
+=== DIAGNOSTIC 2: ARCH-LM Test ===
+LM Statistic: 19.1311
+P-value:      0.0386
+
+=== DESCRIPTIVE STATS (Conditional Volatility) ===
+count    4844.000000
+mean        0.171423
+std         0.062598
+min         0.062381
+25%         0.121152
+50%         0.164200
+75%         0.204010
+max         0.431461
+Name: Conditional_Volatility, dtype: float64
+
+
+
+--- AUGMENTED DICKEY-FULLER (ADF) TEST RESULTS ---
+Variable  ADF Level (t-stat)  ADF Level (p-val)  ADF Diff (t-stat)  ADF Diff (p-val) Result
+      EG              -3.338              0.013             -5.696               0.0   I(0)
+     VOL              -3.102              0.026            -12.292               0.0   I(0)
+  L_REER              -1.430              0.568            -12.355               0.0   I(1)
+   L_WPI              -1.092              0.718            -10.616               0.0   I(1)
+   L_CPI              -0.854              0.803            -10.412               0.0   I(1)
+   L_IPI               0.276              0.976             -5.371               0.0   I(1)
+
+
+--- PHILLIPS-PERRON (PP) TEST RESULTS ---
+Variable  PP Level (t-stat)  PP Level (p-val)  PP Diff (t-stat)  PP Diff (p-val) Result
+      EG             -5.808             0.000           -24.264              0.0   I(0)
+     VOL             -4.226             0.001           -17.172              0.0   I(0)
+  L_REER             -1.135             0.701           -12.077              0.0   I(1)
+   L_WPI             -1.083             0.722           -10.861              0.0   I(1)
+   L_CPI             -1.351             0.606           -10.088              0.0   I(1)
+   L_IPI             -1.494             0.536           -38.511              0.0   I(1)
+
+
+
+
+-------------------------------------------------------
+STEP 1: LAG SELECTION (Optimizing AIC, Max 6, No Drops)
+-------------------------------------------------------
+Selected Lag Structure:
+  EG: 6
+  VOL: 0
+  L_REER: 0
+  L_WPI: 0
+  L_CPI: 4
+  L_IPI: 2
+
+-------------------------------------------------------
+STEP 2: MODEL FIT STATISTICS (Explicitly Printed)
+-------------------------------------------------------
+                                ARDL Model Results                                
+==================================================================================
+Dep. Variable:                         EG   No. Observations:                  237
+Model:             ARDL(6, 0, 0, 0, 4, 2)   Log Likelihood                -804.230
+Method:                   Conditional MLE   S.D. of innovations              7.866
+Date:                    Thu, 27 Nov 2025   AIC                           1646.460
+Time:                            10:01:20   BIC                           1711.866
+Sample:                                 6   HQIC                          1672.841
+                                      237                                         
+==============================================================================
+                 coef    std err          z      P>|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+const         59.6600    115.504      0.517      0.606    -168.016     287.336
+EG.L1          0.4891      0.067      7.334      0.000       0.358       0.621
+EG.L2          0.2358      0.075      3.147      0.002       0.088       0.383
+EG.L3          0.1009      0.075      1.353      0.178      -0.046       0.248
+EG.L4         -0.1067      0.074     -1.444      0.150      -0.252       0.039
+EG.L5          0.0075      0.073      0.103      0.918      -0.137       0.152
+EG.L6         -0.0293      0.063     -0.465      0.642      -0.153       0.095
+VOL.L0       -19.5841     10.724     -1.826      0.069     -40.724       1.556
+L_REER.L0    -21.7223     14.951     -1.453      0.148     -51.192       7.748
+L_WPI.L0      29.9109     32.663      0.916      0.361     -34.473      94.295
+L_CPI.L0     379.8211    136.339      2.786      0.006     111.074     648.568
+L_CPI.L1    -210.6509    223.381     -0.943      0.347    -650.971     229.669
+L_CPI.L2    -162.2351    235.212     -0.690      0.491    -625.876     301.406
+L_CPI.L3     314.3203    226.875      1.385      0.167    -132.888     761.529
+L_CPI.L4    -320.4216    138.840     -2.308      0.022    -594.097     -46.746
+L_IPI.L0      39.5599     14.829      2.668      0.008      10.329      68.791
+L_IPI.L1     -18.5958     14.030     -1.325      0.186     -46.252       9.060
+L_IPI.L2     -42.1069     13.406     -3.141      0.002     -68.533     -15.681
+==============================================================================
+
+--- DETAILED FIT STATISTICS ---
+R-squared:          0.6692
+Adjusted R-squared: 0.6428
+F-statistic:        25.3487
+Prob(F-statistic):  0.0000
+Log-Likelihood:     -804.2302
+AIC:                1646.4605
+BIC:                1711.8664
+Durbin-Watson:      2.0007
+
+-------------------------------------------------------
+STEP 3: DIAGNOSTIC TESTS (Detailed Output)
+-------------------------------------------------------
+
+1. Serial Correlation (Breusch-Godfrey LM Test):
+   LM Statistic: 0.7384
+   p-value:      0.6913
+   Result:       PASS
+
+2. Heteroskedasticity (Breusch-Pagan Test):
+   LM Statistic: 28.0919
+   p-value:      0.0439
+   Result:       FAIL
+
+3. Normality (Jarque-Bera Test):
+   JB Statistic: 32.8670
+   p-value:      0.0000
+   Skewness:     0.5571
+   Kurtosis:     4.4742
+   Result:       FAIL
+
+4. Functional Form (Ramsey RESET Test):
+   F-Statistic: 0.4799
+   p-value:     0.4892
+   Result:      PASS
+
+-------------------------------------------------------
+STEP 4: ARDL BOUNDS TEST
+-------------------------------------------------------
+Calculated F-Statistic: 6.9242
+Critical Values (Pesaran et al., 2001, Case III):
+   1% Significance:  I(0)=3.41  I(1)=4.68
+   5% Significance:  I(0)=2.62  I(1)=3.79
+   10% Significance: I(0)=2.26  I(1)=3.35
+
+-------------------------------------------------------
+STEP 5: LONG RUN ESTIMATES
+-------------------------------------------------------
+Variable   | Coefficient    
+------------------------------
+VOL        | -64.70909
+L_REER     | -71.77385
+L_WPI      | 98.83045
+L_CPI      | 2.75488
+L_IPI      | -69.85902
+
+ECT (Speed of Adjustment): -0.30265
+
+-------------------------------------------------------
+STEP 6: GENERATING CUSUM PLOTS
+-------------------------------------------------------
+CUSUM Plot saved as 'CUSUM_Plot.png'.
+
+-------------------------------------------------------
+STEP 7: SHORT RUN (ECM) ESTIMATION
+-------------------------------------------------------
+                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:                   D_EG   R-squared:                       0.347
+Model:                            OLS   Adj. R-squared:                  0.301
+Method:                 Least Squares   F-statistic:                     7.618
+Date:                Thu, 27 Nov 2025   Prob (F-statistic):           1.55e-13
+Time:                        10:01:20   Log-Likelihood:                -803.29
+No. Observations:                 231   AIC:                             1639.
+Df Residuals:                     215   BIC:                             1694.
+Df Model:                          15                                         
+Covariance Type:            nonrobust                                         
+==============================================================================
+                 coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------
+const          0.0248      0.681      0.036      0.971      -1.318       1.367
+ECT_Lag1      -0.2918      0.054     -5.425      0.000      -0.398      -0.186
+D_EG_L1       -0.2157      0.069     -3.115      0.002      -0.352      -0.079
+D_EG_L2        0.0181      0.068      0.264      0.792      -0.117       0.153
+D_EG_L3        0.1126      0.069      1.634      0.104      -0.023       0.248
+D_EG_L4        0.0180      0.066      0.272      0.786      -0.112       0.148
+D_EG_L5        0.0285      0.062      0.463      0.644      -0.093       0.150
+D_VOL        -28.1536     19.082     -1.475      0.142     -65.765       9.458
+D_L_REER     -13.4441     46.454     -0.289      0.773    -105.008      78.120
+D_L_WPI      103.9833     64.403      1.615      0.108     -22.959     230.926
+D_L_CPI      296.3207    146.377      2.024      0.044       7.803     584.839
+D_L_CPI_L1   178.2924    143.459      1.243      0.215    -104.473     461.058
+D_L_CPI_L2    14.4512    141.959      0.102      0.919    -265.358     294.260
+D_L_CPI_L3   314.5613    136.163      2.310      0.022      46.176     582.946
+D_L_IPI       30.0177     14.092      2.130      0.034       2.242      57.794
+D_L_IPI_L1    36.4224     12.731      2.861      0.005      11.329      61.516
+==============================================================================
+Omnibus:                       19.349   Durbin-Watson:                   2.012
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):               29.150
+Skew:                           0.523   Prob(JB):                     4.68e-07
+Kurtosis:                       4.390   Cond. No.                     5.17e+03
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+[2] The condition number is large, 5.17e+03. This might indicate that there are
+strong multicollinearity or other numerical problems.
+
+
+
+Multicollinearity Tests
+1. Correlation Matrix:
+           VOL  L_REER   L_WPI   L_CPI   L_IPI
+VOL     1.0000  0.1510 -0.2474 -0.0986 -0.2211
+L_REER  0.1510  1.0000 -0.7844 -0.8511 -0.8451
+L_WPI  -0.2474 -0.7844  1.0000  0.9111  0.9572
+L_CPI  -0.0986 -0.8511  0.9111  1.0000  0.9399
+L_IPI  -0.2211 -0.8451  0.9572  0.9399  1.0000
+
+2. Variance Inflation Factor (VIF):
+  Variable           VIF
+0    const  36396.956366
+1      VOL      1.222677
+2   L_REER      4.068434
+3    L_WPI     13.091157
+4    L_CPI     11.186884
+5    L_IPI     19.959478
+-> WARNING: High Multicollinearity detected (VIF > 10)
+
+[B] Autocorrelation Tests
+1. Durbin-Watson Statistic: 2.0007
+-> PASS: Statistic is close to 2.0 (No Autocorrelation)
+2. Breusch-Godfrey LM Test (Lag 2):
+   p-value: 0.6913 -> PASS
+
+[C] Heteroskedasticity Test
+1. Breusch-Pagan Test:
+   p-value: 0.0439 -> FAIL
+
+[D] Normality Tests
+1. Jarque-Bera Test:
+   p-value: 0.0000 -> FAIL
+   Skewness: 0.5571, Kurtosis: 4.4742
+-> Histogram saved as 'Normality_Histogram.png'
+-> Q-Q Plot saved as 'Normality_QQ_Plot.png'
+
+[E] Functional Form Test
+1. Ramsey RESET Test:
+   p-value: 0.4892 -> PASS
+
+-------------------------------------------------------
+STEP 4: ARDL BOUNDS TEST & LONG RUN
+-------------------------------------------------------
+F-Statistic: 6.9242
+Bound (1%): ~4.68 | Bound (5%): ~3.79
+
+-------------------------------------------------------
+LONG RUN COEFFICIENTS & T-STATISTICS (Delta Method)
+-------------------------------------------------------
+Variable   | Coeff      | Std.Err    | t-Stat     | Prob      
+-----------------------------------------------------------------
+VOL        | -64.7091   | 35.5273    | -1.8214    | 0.0699     
+L_REER     | -71.7739   | 51.8610    | -1.3840    | 0.1678     
+L_WPI      | 98.8305    | 104.1554   | 0.9489     | 0.3438     
+L_CPI      | 2.7549     | 61.2830    | 0.0450     | 0.9642     
+L_IPI      | -69.8590   | 71.5348    | -0.9766    | 0.3299     
+-----------------------------------------------------------------
+
+-------------------------------------------------------
+STEP 5: STABILITY TESTS (CUSUM & CUSUMSQ)
+-------------------------------------------------------
+-> CUSUM Plot saved as 'CUSUM_Plot.png'
+-> CUSUMSQ Plot saved as 'CUSUMSQ_Plot.png'
+
+-------------------------------------------------------
+STEP 6: SUBSAMPLE STABILITY TEST (Robustness Check)
+-------------------------------------------------------
+Variable   | Subsample 1  | Subsample 2 
+----------------------------------------
+VOL        | 21.7499      | -79.5359    
+L_REER     | -237.3910    | -86.4930    
+L_WPI      | 200.1337     | 105.3915    
+L_CPI      | -21.0535     | -129.1289   
+L_IPI      | -103.8825    | -14.5235    
+
+-------------------------------------------------------
+STEP 7: GRANGER CAUSALITY TEST
+-------------------------------------------------------
+Direction            | p-value    | Result
+VOL          -> EG  | 0.0656     | No Cause
+D_L_REER     -> EG  | 0.4882     | No Cause
+D_L_WPI      -> EG  | 0.0041     | Causal
+D_L_CPI      -> EG  | 0.0143     | Causal
+D_L_IPI      -> EG  | 0.4533     | No Cause
